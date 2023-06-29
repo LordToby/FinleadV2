@@ -27,6 +27,6 @@ public class MyDbContext : DbContext
     //Skal det være rigtigt skal jeg hive connectionString ind fra appsettings.json istedet.
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseNpgsql("hidden"); // Erstat "connection_string" med din forbindelsesstreng til ElephantSQL-databasen
+        optionsBuilder.UseNpgsql("Server=mouse.db.elephantsql.com;Port=5432;Database=finleadDb;User Id=vhaadoru;Password=CDnHt_wQpm0bhxGqhWY25YgLoddRweby"); // Erstat "connection_string" med din forbindelsesstreng til ElephantSQL-databasen
     }
 }
