@@ -11,7 +11,8 @@ export const ModalPopup=(props)=>{
   // const year = new Date().getFullYear()
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
+  //const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   console.log(isLoggedIn);
   const navigate = useNavigate();
 
@@ -30,19 +31,23 @@ export const ModalPopup=(props)=>{
     console.log(inputs);
     let response = null;
     if(!isLoggedIn){   
-    response = await fetch(`http://localhost:4000/api/login`, {
+    response = await fetch(`http://localhost:7050/Login/loginUser?email=${inputs.email}&password=${inputs.password}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(inputs),
+      body: JSON.stringify({
+        email: inputs.email,
+        password:inputs.password
+      }),
       credentials: 'include', // Add this line
     });
+    console.log(response);
     if(response.ok){
       setIsLoggedIn(true);
       const responseData = await response.json();
       console.log(responseData)
-      localStorage.setItem('token', responseData.token); // store the token in local storage
+      //localStorage.setItem('token', responseData.token); // store the token in local storage
       //navigate("/about");
       setError("");
       handleClose();
@@ -52,17 +57,18 @@ export const ModalPopup=(props)=>{
     }
   }
   else{
-    response = await fetch("http://localhost:4000/api/logout",  {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            credentials: 'include', // Add this line
-          });
-          if(response.ok){
-            setIsLoggedIn(false);
-            localStorage.removeItem("token");
-          }
+    // response = await fetch("http://localhost:5050/login/loginuser",  {
+    //         method: "POST",
+    //         headers: {
+    //           "Content-Type": "application/json",
+    //         },
+    //         credentials: 'include', // Add this line
+    //       });
+    //       if(response.ok){
+    //         setIsLoggedIn(false);
+    //         localStorage.removeItem("token");
+    //       }
+    console.log("Set to logout please")
   }
    
   };

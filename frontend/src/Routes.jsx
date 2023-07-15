@@ -7,6 +7,7 @@ import AuthContext from "./components/AuthContext";
 import { Spinner } from "./components/shared/Spinner";
 import { Register } from "./pages/Register";
 import { ProfilePage } from "./pages/ProfilePage";
+import { ModalPopup } from "./components/ModalPopup";
 
 const router = createBrowserRouter([
   {
@@ -16,7 +17,7 @@ const router = createBrowserRouter([
     children: [
       { path: "main", element: <h1>This is the landing page</h1> },
       { path: "stock/:ticker", element: <Stock></Stock> },
-      { path: "about", element: <h1>About</h1> },
+      { path: "about", element: <ModalPopup/> },
       { path: "spinner", element: <Spinner /> },
       { path: "register", element: <Register /> },
       { path: "profile/:name", element: <ProfilePage /> },
