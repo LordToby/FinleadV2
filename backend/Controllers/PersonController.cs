@@ -61,6 +61,6 @@ namespace ElephantSQL_example.Controllers
 
         }
 
-        [HttpPost("add")]
+        // [HttpPost("add")]
     }
 }
