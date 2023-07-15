@@ -8,6 +8,8 @@ public class MyDbContext : DbContext
     //En af tabellerne.
     public DbSet<Person> Person { get; set; }
 
+    public DbSet<User> User { get; set; }   
+
     //Tom constructor er påkrævet
     public MyDbContext(DbContextOptions<MyDbContext> options) : base(options)
     {
@@ -17,6 +19,10 @@ public class MyDbContext : DbContext
     //Indstillinger for model der skabes ved opstart.
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Person>().
+             Property(f => f.Id)
+            .ValueGeneratedOnAdd(); //Sikrer autoinkrementering af Id'er
+        base.OnModelCreating(modelBuilder);
         modelBuilder.Entity<Person>().
              Property(f => f.Id)
             .ValueGeneratedOnAdd(); //Sikrer autoinkrementering af Id'er

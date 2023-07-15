@@ -61,6 +61,40 @@ namespace ElephantSQL_example.Controllers
 
         }
 
-        // [HttpPost("add")]
+        [HttpPost("addUser", Name = "AddUser")]
+        public async Task<IActionResult> AddUser(User payload) {
+            string hashedPassword = BCrypt.Net.BCrypt.HashPassword(payload.Password);
+            var user = new User {
+                Email = payload.Email,
+                Password = hashedPassword,
+                UserName = payload.UserName,
+                CreatedAt = payload.CreatedAt,
+            };
+            var existingUser = await _dbContext.User.Where(x => x.Email == user.Email || x.UserName == user.UserName).FirstOrDefaultAsync();
+                try
+                {
+                if (existingUser == null)
+                {
+                    await _dbContext.User.AddAsync(user);
+                    await _dbContext.SaveChangesAsync(); 
+                    return Ok();
+                }
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Error occurred while adding a person");
+                    return StatusCode(500);
+                }
+            return StatusCode(400);   
+
+        }
+
+        [HttpGet("users", Name ="GetUsers")]
+        public async Task<List<User>> GetUsers()
+        {
+            return await _dbContext.User.ToListAsync();
+        }
+
+
     }
 }
