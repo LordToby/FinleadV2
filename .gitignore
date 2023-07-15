@@ -4,4 +4,3 @@ obj/
 bin/
 .vscode/settings.json/
 backend/*.sln
-backend/*.csproj

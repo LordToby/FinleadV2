@@ -36,7 +36,6 @@
   background-color: #242526;
 }
 
-
 .link-container {
   margin-left: 18%;
 }
@@ -52,8 +51,6 @@
 .nav-icon {
   margin-left: 2rem;
 }
-
-
 
 .nav-item {
   margin-right: 1rem;
@@ -109,11 +106,10 @@ ul.dropdown-menu {
   border: none;
 }
 
-
-
-form.form-search {
+/* parent search bar*/
+.form-container {
   position: relative;
-  /* width: 30vh; */
+  width: 30vh;
 }
 
 .form-container:before {
@@ -135,7 +131,6 @@ form.form-search {
 .ticker-link {
   text-decoration: none;
   color: black;
-  cursor:pointer;
 }
 
 /* The search field when it gets focus/clicked on */

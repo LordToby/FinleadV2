@@ -1,27 +1,23 @@
 import React, {useContext, useState} from "react";
 import AuthContext from "./AuthContext";
 import { ModalPopup } from "./ModalPopup";
-//import { io } from "socket.io-client";
-
-//const socket = io("http://localhost:4000")
 
 export const CommentField=(props) =>{
-
-    //const { userState, setUserState } = useContext(AuthContext);
+    const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
     const [isExpanded, setExpanded] = useState(false);
     const [modalVisible, setModal] = useState(false);
     const [comment, setComment] = useState("");
-    //console.log("min ticker er " + props.ticker);
-    //console.log("For min context er bruger " + userState.userReference);
+    console.log("min ticker er " + props.ticker);
 
-    // function handleClick(){
-    //     if(userState.isLoggedIn){
-    //    setExpanded(true);
-    //    }
-    //    else{
-    //     setExpanded(false);
-    //    }
-    // }
+    function handleClick(){
+        console.log("isLoggedIn: ", isLoggedIn);
+        if(isLoggedIn){
+       setExpanded(true);
+       }
+       else{
+        setModal(true);
+       }
+    }
     const handleChange = (event) => {
         const value = event.target.value;
         console.log(value);
@@ -29,15 +25,32 @@ export const CommentField=(props) =>{
         console.log(comment);
       };
 
-
     const handleSubmit = async(event) =>{
        event.preventDefault();
-       const messageObject = {tickerRef: props.ticker, comment:comment, user: userState.userReference, parent: null};
-       socket.emit("comment", messageObject)
+       let response = null;
+       const commentObject ={
+         content: comment,
+         user: "abe",
+         tickerRef: props.ticker,
+       };
+       response = await fetch(`http://localhost:4000/api/postComment/${props.ticker}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(commentObject),
+       })
+       if(response.ok){
+        const responseData = await response.json();
+        console.log(responseData);
+        // Trigger re-render of Stock component by updating comments state
+        props.setComments((prevComments) => [...prevComments, responseData]);
+       } else{
+        console.log("Den gik sgu ikke");
+       }
        setExpanded(false);
        setComment('');
     }
-
 
     return (
         <>
@@ -46,7 +59,6 @@ export const CommentField=(props) =>{
              {isExpanded &&(
                    <div>
                     <form onSubmit={handleSubmit}>
-                    <p hidden name="user">{userState.userReference}</p>
                     <textarea name="content" placeholder="write your comment here..." onChange={handleChange}></textarea>
                     <br></br>
                     <button type="submit">Post</button>

@@ -1,5 +1,5 @@
 import { SearchBar } from "./SearchBar";
-import "../../../styles/navbar.css"
+import "../../../styles/navbar.css";
 import Container from "react-bootstrap/Container";
 import Navbar from "react-bootstrap/Navbar";
 import { DropDown } from "./DropDown";
@@ -11,7 +11,7 @@ import { ModalPopup } from "../../ModalPopup";
 import { LogOutButton } from "../../LogoutButton";
 
 export const Header = () => {
-  //const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
+  const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
   return (
     <Navbar className="myNavbar">
       <Container fluid style={{ backgroundColor: "transparent" }}>
@@ -22,20 +22,16 @@ export const Header = () => {
           </Navbar.Brand>
         </div>
         <Navbar.Toggle aria-controls="navbarScroll" />
-        <SearchBar /> 
-        <Sections /> 
-        <Icons/>
+        <SearchBar />
+        <Sections />
+        {isLoggedIn ? (
+          <div className="left-header">
+            <Icons />
+          </div>
+        ) : (
+          <ModalPopup />
+        )}
       </Container>
     </Navbar>
   );
 };
-
-
-
-// {isLoggedIn ? (
-//   <div className="left-header">
-//     <Icons />
-//   </div>
-// ) : (
-//   {/* <ModalPopup /> */}
-// )}

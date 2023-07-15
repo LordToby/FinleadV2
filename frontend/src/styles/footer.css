@@ -2,6 +2,7 @@ footer {
   background-color: #242526;
   display: flex;
   justify-content: space-around;
+  height: 35px;
   text-align: center;
   line-height: 35px;
 }
@@ -24,10 +25,6 @@ footer {
 }
 .instagram:hover {
   color: rgb(225, 48, 108);
-}
-
-.title{
-  color: white;
 }
 
 .link {

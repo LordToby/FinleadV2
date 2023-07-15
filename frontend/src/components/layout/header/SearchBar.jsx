@@ -16,59 +16,48 @@ export const SearchBar = () => {
     }
   };
 
-  // useEffect(() => {
-  //   const fetchTickers = async () => {
-  //     try {
-  //       const response = await fetch(`http://localhost:${4000}/api/searchbar`, {
-  //         method: "GET",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //         cache: "default",
-  //       });
-  //       const responseData = await response.json();
-  //       console.log(responseData);
-  //       setTickers(responseData);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
+  useEffect(() => {
+    const fetchTickers = async () => {
+      try {
+        const response = await fetch(`http://localhost:${4000}/api/searchbar`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          cache: "default",
+        });
+        const responseData = await response.json();
+        console.log(responseData);
+        setTickers(responseData);
+      } catch (error) {
+        console.log(error);
+      }
+    };
 
-  //   fetchTickers();
+    fetchTickers();
 
-  //   //adding event listener once SearchBar is mounted
-  //   document.addEventListener("click", handleClickedOutside);
-  //   //removing event listener once SearchBar is unmounted
-  //   return () => {
-  //     document.removeEventListener("click", handleClickedOutside);
-  //   };
-  // }, []);
+    //adding event listener once SearchBar is mounted
+    document.addEventListener("click", handleClickedOutside);
+    //removing event listener once SearchBar is unmounted
+    return () => {
+      document.removeEventListener("click", handleClickedOutside);
+    };
+  }, []);
 
   return (
-    <Form className="form-container"
-  onSubmit={(event) => {
-    event.preventDefault(); // prevent page refresh
-    if (filteredTickers.length > 0) {
-      navigate(`stock/${filteredTickers[0].ticker}`);
-    }
-  }} 
-    >
+    <Form className="form-container">
       <Form.Control
         ref={refForm}
         type="search"
         placeholder="Ticker"
         className="search-bar"
         aria-label="Search"
-        // onKeyDown={(e) => {
-        //   if (e.key === "Enter" && filteredTickers.length > 0) {           
-        //     navigate(`stock/${filteredTickers[0].ticker}`);
-
-        //   }
-        // }}
-        onClick={(event) => {
-
-          setIsOpen(true)}
-        }
+        onKeyDown={(e) => {
+          if (e.key === "Enter" && filteredTickers.length > 0) {
+            navigate(`stock/${filteredTickers[0].ticker}`);
+          }
+        }}
+        onClick={() => setIsOpen(true)}
         onChange={(e) => {
           const value = e.target.value;
           const filtered =

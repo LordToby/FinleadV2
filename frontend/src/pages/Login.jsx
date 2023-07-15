@@ -21,36 +21,9 @@ export const Login = (props) => {
     setInputs((values) => ({ ...values, [name]: value }));
   };
 
-
-  async function setCookie(cname, cvalue, exdays) {
-    console.log("Got in set cookie");
-    const d = new Date();
-    d.setTime(d.getTime() + (exdays*24*60*60*1000));
-    let expires = "expires="+ d.toUTCString();
-    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-  console.log(getCookie(cname));
-  }
-  
-  async function getCookie(cname) {
-    let name = cname + "=";
-    let decodedCookie = decodeURIComponent(document.cookie);
-    let ca = decodedCookie.split(';');
-    for(let i = 0; i <ca.length; i++) {
-      let c = ca[i];
-      while (c.charAt(0) == ' ') {
-        c = c.substring(1);
-      }
-      if (c.indexOf(name) == 0) {
-        return c.substring(name.length, c.length);
-      }
-    }
-    return "";
-  }
-
-  
   const handleSubmit = async (event) => {
     event.preventDefault();
-    //console.log(inputs);
+    console.log(inputs);
     const response = await fetch(`http://localhost:4000/api/login`, {
       method: "POST",
       headers: {
@@ -58,9 +31,8 @@ export const Login = (props) => {
       },
       body: JSON.stringify(inputs),
     });
-    //console.log(response);
+    console.log(response);
     if (!response.ok) {
-      console.log("Gets in response error");
       setError("Invalid email or password!");
       //throw new Error("Network response was not ok");
       // const errorResponse = await response.json();
@@ -71,18 +43,11 @@ export const Login = (props) => {
       // }
     }
     else{
-      console.log("I make it to else");
       const responseData = await response.json();
-      await setCookie("UserCookie", "True", 30).then((res) => {
-        console.log("Got in setCookie");
-      })
-      //console.log(responseData);
-      setTimeout(() => {
-        navigate("/about");
-      }, 1000);
+      console.log(responseData)
+      navigate("/about");
     } 
   };
-
 
   return (
     <div className="container">
@@ -137,5 +102,3 @@ export const Login = (props) => {
     </div>
   );
 };
-
-
