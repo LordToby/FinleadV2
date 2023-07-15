@@ -5,4 +5,3 @@ bin/
 .vscode/settings.json/
 backend/*.sln
 backend/*.csproj
-backend/*.csproj.user
