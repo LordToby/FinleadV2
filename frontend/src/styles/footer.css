@@ -1,0 +1,38 @@
+footer {
+  background-color: #242526;
+  display: flex;
+  justify-content: space-around;
+  height: 35px;
+  text-align: center;
+  line-height: 35px;
+}
+
+.social-icon {
+  color: #b0b3b8;
+  font-size: 1.7rem;
+  padding-right: 1vh;
+}
+
+.social-icons {
+  display: flex;
+  align-items: center;
+}
+.facebook :hover {
+  color: rgb(59, 89, 152);
+}
+.twitter :hover {
+  color: rgb(29, 161, 242);
+}
+.instagram:hover {
+  color: rgb(225, 48, 108);
+}
+
+.link {
+  text-decoration: none;
+  color: #b0b3b8;
+}
+
+.link:hover {
+  text-decoration: underline;
+  color: white;
+}
