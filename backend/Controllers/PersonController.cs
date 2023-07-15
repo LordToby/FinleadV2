@@ -60,5 +60,7 @@ namespace ElephantSQL_example.Controllers
              return Ok(); 
 
         }
+
+        [HttpPost("add")]
     }
 }
