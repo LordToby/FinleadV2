@@ -11,8 +11,8 @@ export const ModalPopup=(props)=>{
   // const year = new Date().getFullYear()
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  //const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
+  //const [isLoggedIn, setIsLoggedIn] = useState(false);
   console.log(isLoggedIn);
   const navigate = useNavigate();
 
@@ -47,8 +47,6 @@ export const ModalPopup=(props)=>{
       setIsLoggedIn(true);
       const responseData = await response.json();
       console.log(responseData)
-      //localStorage.setItem('token', responseData.token); // store the token in local storage
-      //navigate("/about");
       setError("");
       handleClose();
     }
@@ -57,18 +55,8 @@ export const ModalPopup=(props)=>{
     }
   }
   else{
-    // response = await fetch("http://localhost:5050/login/loginuser",  {
-    //         method: "POST",
-    //         headers: {
-    //           "Content-Type": "application/json",
-    //         },
-    //         credentials: 'include', // Add this line
-    //       });
-    //       if(response.ok){
-    //         setIsLoggedIn(false);
-    //         localStorage.removeItem("token");
-    //       }
     console.log("Set to logout please")
+    setIsLoggedIn(false);
   }
    
   };

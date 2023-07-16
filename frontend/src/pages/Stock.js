@@ -3,6 +3,7 @@ import LineChart from "../components/charts/LineChart";
 import { CommentField } from "../components/CommentField";
 import { CommentBox } from "../components/CommentBox";
 import { useParams } from "react-router-dom";
+import AuthContext from "../components/AuthContext";
 
 const StockData = [
   {
@@ -32,6 +33,9 @@ const StockData = [
   },
 ];
 function Stock() {
+  const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
+
+  console.log(isLoggedIn);
   const { ticker } = useParams();
   const [chartData, setChartData] = useState({
     labels: StockData.map((data) => data.year),

@@ -43,9 +43,9 @@ namespace ElephantSQL_example.Controllers
             else
             {
                 return StatusCode(StatusCodes.Status404NotFound);
-            }
-            
-            
+            }                        
         }
+
+        //Logout håndteres udelukkende i frontenden
     }
 }

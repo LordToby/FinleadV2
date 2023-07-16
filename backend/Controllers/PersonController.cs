@@ -62,13 +62,13 @@ namespace ElephantSQL_example.Controllers
         }
 
         [HttpPost("addUser", Name = "AddUser")]
-        public async Task<IActionResult> AddUser(User payload) {
-            string hashedPassword = BCrypt.Net.BCrypt.HashPassword(payload.Password);
+        public async Task<IActionResult> AddUser(string email, string userName, string password) {
+            string hashedPassword = BCrypt.Net.BCrypt.HashPassword(password);
             var user = new User {
-                Email = payload.Email,
+                Email = email,
                 Password = hashedPassword,
-                UserName = payload.UserName,
-                CreatedAt = payload.CreatedAt,
+                UserName = userName,
+                CreatedAt = DateTime.Now,
             };
             var existingUser = await _dbContext.User.Where(x => x.Email == user.Email || x.UserName == user.UserName).FirstOrDefaultAsync();
                 try

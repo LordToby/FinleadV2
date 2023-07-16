@@ -161,3 +161,8 @@ input.search-query {
 .logout-button{
   margin: 0 41%;
 }
+
+.register-form{
+  display: flex;
+  flex-direction: column;
+}

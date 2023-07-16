@@ -27,30 +27,7 @@ const router = createBrowserRouter([
 
 function Routes() {
   const [isLoggedIn, setIsLoggedIn] = useState(AuthContext);
-  useEffect(() => {
-    const checkLoggedIn = async () => {
-      try {
-        const response = await fetch("http://localhost:4000/api/checkLogin", {
-          method: "GET",
-          credentials: "include",
-        });
-
-        if (response.ok) {
-          setIsLoggedIn(true);
-        } else {
-          setIsLoggedIn(false);
-          localStorage.removeItem("token");
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    const token = localStorage.getItem("token");
-    if (token) {
-      checkLoggedIn();
-    }
-  }, []);
+  console.log(isLoggedIn);
   return (
     <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn }}>
       <RouterProvider

@@ -1,64 +1,54 @@
-import React, {useState} from "react";
+import React, {Fragment, useState} from "react";
 import InputField from "../components/InputField";
 import Modal from 'react-bootstrap/Modal';
 import Button from "react-bootstrap/Button"
 import "../styles/login.css";
 
-export const Register=(props)=>{
-  const [show, setShow] = useState(false);
-  const year = new Date().getFullYear()
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+export const Register=()=>{
+
+  const createUser = async (event) => {
+    console.log("Hejsa")
+    event.preventDefault();
+    const email = event.target.email.value;
+    const username = event.target.username.value;
+    const password = event.target.psw.value;
+    console.log(email, username, password);
+
+    // let response = null;
+    // response = await fetch(`http://localhost:7050/Login/loginUser?email=${inputs.email}&password=${inputs.password}`, {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({
+    //     email: inputs.email,
+    //     password:inputs.password
+    //   }),
+    //   credentials: 'include', // Add this line
+    // });
+
+  }
 
   return (
-    <>
-      <Button variant="primary" onClick={handleShow}>
-        Launch static backdrop modal
-      </Button>
+    <Fragment>
+    <div className="register-form">
+    <form onSubmit={createUser}>
+    <label><b>Email</b></label> 
+    <input type="text" placeholder="Enter Email" name="email" required/> 
+    
+    <label><b>Username</b></label>
+    <input type="text" placeholder="enter your username" name="username" required/>
 
-      <Modal
-        show={show}
-        onHide={handleClose}
-        backdrop="static"
-        keyboard={false}
-      >
-        <Modal.Header closeButton>
-          <Modal.Title>Login</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-        <div className="loginContainer">
-        <img src="Title.png" alt="Title"></img>
-        <br></br>
-        <br></br>
-                <form onSubmit={""} className="login">
-                <InputField type="email" placeholder="email"/>
-                <InputField type="password" placeholder="password"/> 
-                <div className="form-group mb-3" control-id="formBasicCheckbox">
-            <p className="small">
-              <a className="text-primary" href="#!">
-                Forgot password?
-              </a>
-            </p>
-          </div>
-            <button className="btn btn" type="submit">
-              Login
-            </button>
-          
-                </form>
-                <div className="mt-3">
-          <p className="mb-0  text-center">
-            Don't have an account?{" "} <br></br>
-            <a href="{''}" className="text-primary fw-bold">
-              Sign Up
-            </a>
-          </p>
-        </div>
-        <br/>
-        <p>© FinLead team {year}</p>
-            </div>
-        </Modal.Body>
-      </Modal>
-    </>
+    <label><b>Password</b></label> 
+    <input type="password" placeholder="Enter Password" name="psw" required/> 
+    {/* <label>
+      <input type="checkbox" checked="checked" name="remember"/> Remember me 
+    </label> <br/> */}
+    <button type="submit">Så kører vi!</button>
+    </form>
+    <p>By creating an account you agree to our <a href="#">Terms & Privacy</a>.</p>
+    </div>
+    </Fragment>
   );
 
 }
