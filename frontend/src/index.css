@@ -26,7 +26,7 @@ code {
 }
 
 .content {
-  background-image: url("../public/background.png");
+  background-color: #18191a;
   background-repeat: no-repeat;
   background-size: cover;
   background-attachment: fixed;
@@ -42,12 +42,11 @@ code {
   bottom: 0;
 }
 
-  .left-header{
-    margin: 0 5%;
-  }
+.left-header {
+  margin: 0 5%;
+}
 
-
-.comment-section{
+.comment-section {
   height: 200px;
   overflow-y: auto;
   padding: 5% 10% 0 10%;

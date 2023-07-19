@@ -2,20 +2,26 @@ footer {
   background-color: #242526;
   display: flex;
   justify-content: space-around;
-  height: 35px;
-  text-align: center;
+  height: 4vh;
+  min-height: 30px;
+  align-items: center;
+
   line-height: 35px;
 }
-
+.footer-ul {
+  margin: 0;
+}
 .social-icon {
   color: #b0b3b8;
   font-size: 1.7rem;
+
   padding-right: 1vh;
 }
 
 .social-icons {
   display: flex;
-  align-items: center;
+  justify-content: space-around;
+  gap: 1vh;
 }
 .facebook :hover {
   color: rgb(59, 89, 152);
