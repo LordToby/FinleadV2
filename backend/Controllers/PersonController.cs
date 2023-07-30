@@ -68,7 +68,7 @@ namespace ElephantSQL_example.Controllers
                 Email = email,
                 Password = hashedPassword,
                 UserName = userName,
-                CreatedAt = DateTime.Now,
+                CreatedAt = DateTime.UtcNow,
             };
             var existingUser = await _dbContext.User.Where(x => x.Email == user.Email || x.UserName == user.UserName).FirstOrDefaultAsync();
                 try

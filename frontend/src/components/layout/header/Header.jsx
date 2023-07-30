@@ -11,7 +11,6 @@ import { ModalPopup } from "../../ModalPopup";
 import { LogOutButton } from "../../LogoutButton";
 
 export const Header = () => {
-  const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
   return (
     <Navbar className="myNavbar">
       <Container fluid style={{ backgroundColor: "transparent" }}>
@@ -24,13 +23,7 @@ export const Header = () => {
         <Navbar.Toggle aria-controls="navbarScroll" />
         <SearchBar />
         <Sections />
-        {isLoggedIn ? (
-          <div className="left-header">
-            <Icons />
-          </div>
-        ) : (
           <ModalPopup />
-        )}
       </Container>
     </Navbar>
   );

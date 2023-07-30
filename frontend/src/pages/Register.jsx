@@ -14,18 +14,18 @@ export const Register=()=>{
     const password = event.target.psw.value;
     console.log(email, username, password);
 
-    // let response = null;
-    // response = await fetch(`http://localhost:7050/Login/loginUser?email=${inputs.email}&password=${inputs.password}`, {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify({
-    //     email: inputs.email,
-    //     password:inputs.password
-    //   }),
-    //   credentials: 'include', // Add this line
-    // });
+    let response = null;
+    response = await fetch(`http://localhost:7050/Person/addUser?email=${email}&userName=${username}&password=${password}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: email,
+        password: password
+      }),
+      credentials: 'include', // Add this line
+    });
 
   }
 

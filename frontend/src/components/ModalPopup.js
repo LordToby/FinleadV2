@@ -12,7 +12,6 @@ export const ModalPopup=(props)=>{
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
-  //const [isLoggedIn, setIsLoggedIn] = useState(false);
   console.log(isLoggedIn);
   const navigate = useNavigate();
 
@@ -61,11 +60,21 @@ export const ModalPopup=(props)=>{
    
   };
 
+  const handleLoginStatus = () =>{
+     if(!isLoggedIn){
+      handleShow();
+     }
+     else{
+      setIsLoggedIn(false);
+      handleClose();
+     }
+  }
+  
+
   return (
     <>
-      {!isLoggedIn ? (
         <div>
-        <Button variant="primary" onClick={handleShow}>
+        <Button variant="primary" onClick={handleLoginStatus}>
              {isLoggedIn ? "Logout" : "Login"}
         </Button>
         <Modal
@@ -111,9 +120,9 @@ export const ModalPopup=(props)=>{
             <div className="mt-3">
               <p className="mb-0  text-center">
                 Don't have an account? <br></br>
-                <a href="{''}" className="text-primary fw-bold">
+                <button className="text-primary fw-bold" onClick={()=> {navigate("/register")}}>
                   Sign Up
-                </a>
+                </button>
               </p>
             </div>
             <br />
@@ -123,14 +132,8 @@ export const ModalPopup=(props)=>{
         </Modal.Body>
       </Modal>
       </div>
-      ) : (
-        <div>
-          <form onSubmit={handleSubmit}>
-            <Button type="submit" variant="primary">{isLoggedIn ? "Logout" : "Login"}</Button>
-          </form>
-        </div>
-      )}
-  
+
+
       
     </>
   );

@@ -17,7 +17,7 @@ const router = createBrowserRouter([
     children: [
       { path: "main", element: <h1>This is the landing page</h1> },
       { path: "stock/:ticker", element: <Stock></Stock> },
-      { path: "about", element: <ModalPopup/> },
+      { path: "about", element: <h1>To be added later</h1> },
       { path: "spinner", element: <Spinner /> },
       { path: "register", element: <Register /> },
       { path: "profile/:name", element: <ProfilePage /> },
@@ -26,7 +26,7 @@ const router = createBrowserRouter([
 ]);
 
 function Routes() {
-  const [isLoggedIn, setIsLoggedIn] = useState(AuthContext);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   console.log(isLoggedIn);
   return (
     <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn }}>
