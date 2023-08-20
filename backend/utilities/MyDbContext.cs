@@ -1,14 +1,19 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Npgsql;
 using ElephantSQL_example;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using ElephantSQL_example.utilities;
 
 //Klasse der afspejler databasen og dens tabeller 
-public class MyDbContext : DbContext
+public class MyDbContext : IdentityDbContext<IdentityUser>
 {
     //En af tabellerne.
     public DbSet<Person> Person { get; set; }
 
-    public DbSet<User> User { get; set; }   
+    public DbSet<User> User { get; set; }
+
+    public DbSet<RefreshToken> RefreshTokens { get; set; }
 
     //Tom constructor er påkrævet
     public MyDbContext(DbContextOptions<MyDbContext> options) : base(options)

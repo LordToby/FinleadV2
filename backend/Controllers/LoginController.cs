@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace ElephantSQL_example.Controllers
@@ -16,6 +17,14 @@ namespace ElephantSQL_example.Controllers
             _logger = logger;
             _personController = personController;   
         }
+
+        [HttpGet("resources", Name = "getResources")]
+        [Authorize]
+        public IActionResult GetResources()
+        {
+            return Ok($"protected resources, username: {User.Identity!.Name}");
+        }
+
 
         [HttpGet("getPersons", Name = "GetPersons")]
         public async Task<List<Person>> GetPersons()

@@ -13,6 +13,9 @@ using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity.UI;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using ElephantSQL_example.utilities;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -74,7 +77,32 @@ builder.Services.AddCors(options =>
 });
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
-    .AddEntityFrameworkStores<AuthContext>();
+    .AddEntityFrameworkStores<MyDbContext>();
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(x =>
+{
+    var secret = builder.Configuration.GetValue<string>("Secret");
+    var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(secret));
+    x.RequireHttpsMetadata = true;
+    x.SaveToken = true;
+    x.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        ValidAudience = "https://localhost:5050",
+        ValidIssuer = "https://localhost:5050/",
+        IssuerSigningKey = key,
+        ValidateLifetime = true,
+        ClockSkew = TimeSpan.Zero
+    };
+});
+
+
 
 
 var app = builder.Build();
@@ -102,5 +130,20 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+using (var scope = app.Services.CreateScope())
+using (var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>())
+using (var db = scope.ServiceProvider.GetRequiredService<MyDbContext>())
+{
+   // db.Database.Migrate();
+    var user = await userManager.FindByNameAsync(Consts.UserName);
+
+    if (user == null)
+    {
+        user = new IdentityUser(Consts.UserName);
+        await userManager.CreateAsync(user, Consts.Password);
+    }
+}
+
 
 app.Run();
