@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using ElephantSQL_example.utilities;
+using StackExchange.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +26,8 @@ var configuration = new ConfigurationBuilder()
     .SetBasePath(builder.Environment.ContentRootPath)
     .AddJsonFile("appsettings.Development.json")
     .Build();
+
+
 
 builder.Services.AddControllers();
 builder.Services.AddScoped<PersonController>();
@@ -66,6 +69,13 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddSignalR();
 
 builder.Services.AddDbContext<MyDbContext>().AddMvc();
+
+string redisCacheUrl = configuration["RedisCacheUrl"];
+ConfigurationOptions redisConfig = ConfigurationOptions.Parse(redisCacheUrl);
+redisConfig.AbortOnConnectFail = false;
+
+builder.Services.AddStackExchangeRedisCache(options => { options.ConfigurationOptions = redisConfig;});
+
 
 builder.Services.AddCors(options =>
 {

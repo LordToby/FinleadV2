@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Logging;
+using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace ElephantSQL_example.Controllers
@@ -12,13 +15,14 @@ namespace ElephantSQL_example.Controllers
         //Det er standard at gøre disse variabler til readonly og med _ foran.
         private readonly MyDbContext _dbContext;
         private readonly ILogger<PersonController> _logger;
-
+        private readonly IDistributedCache _cache;
         //Loggeren viser udførte queries i konsollen. 
         //PersonController constructoren kaldes fra en af metoderne i Program.cs
-        public PersonController(MyDbContext dbContext, ILogger<PersonController> logger)
+        public PersonController(MyDbContext dbContext, ILogger<PersonController> logger, IDistributedCache cache)
         {
             _dbContext = dbContext; 
             _logger = logger;
+            _cache = cache;
         }
 
         //Navnet oversættes i GET requestet til http://localhost:7050/Person/person som giver os personer som json objeker tilbage. 
@@ -90,9 +94,39 @@ namespace ElephantSQL_example.Controllers
         }
 
         [HttpGet("users", Name ="GetUsers")]
-        public async Task<List<User>> GetUsers()
+        public async Task<List<User>> GetUsers(bool enableCache)
         {
-            return await _dbContext.User.ToListAsync();
+            List<User> users = new List<User>();
+            if (!enableCache)
+            {
+                return await _dbContext.User.ToListAsync();
+            }
+            string cacheKey = "cacheExample2";
+            // Trying to get data from the Redis cache with the given key
+            byte[] cachedData = await _cache.GetAsync(cacheKey);
+            if(cachedData != null)
+            {
+                // If the data is found in the cache, encode and deserialize cached data.
+                var cachedDataString = Encoding.UTF8.GetString(cachedData);
+                users = JsonSerializer.Deserialize<List<User>>(cachedDataString);
+            }
+            else
+            {
+                // If the data is not found in the cache, then fetch data from database
+                users = await _dbContext.User.ToListAsync();
+                // Serializing the data
+                string cachedDataString = JsonSerializer.Serialize(users);
+                var dataToCache = Encoding.UTF8.GetBytes(cachedDataString);
+                // Setting up the cache options
+                DistributedCacheEntryOptions options = new DistributedCacheEntryOptions()
+                    .SetAbsoluteExpiration(DateTime.Now.AddMinutes(5))
+                    .SetSlidingExpiration(TimeSpan.FromMinutes(3));
+
+                await _cache.SetAsync(cacheKey, dataToCache, options);
+            }
+
+            return users;
+            
         }
 
 
