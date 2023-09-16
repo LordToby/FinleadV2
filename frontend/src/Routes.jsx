@@ -9,6 +9,7 @@ import { Register } from "./pages/Register";
 import { ProfilePage } from "./pages/ProfilePage";
 import { ModalPopup } from "./components/ModalPopup";
 
+
 const router = createBrowserRouter([
   {
     path: "/",
