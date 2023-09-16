@@ -27,6 +27,28 @@ const router = createBrowserRouter([
 
 function Routes() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    // Gendan JWT-token ved sideindlæsning
+    const token = localStorage.getItem("token");
+    console.log(token);
+    if (token) {
+      // Tjek tokenets udløbstid
+      const decodedToken = jwt_decode(token);
+      console.log(decodedToken);
+      const currentTime = Math.floor(Date.now() / 1000); // Konverter til sekunder
+      console.log(decodedToken.exp);
+      if (decodedToken.exp && decodedToken.exp < currentTime) {
+        // Tokenet er udløbet, slet det og log brugeren ud
+        localStorage.removeItem("token");
+        setIsLoggedIn(false);
+      } else {
+        // Tokenet er gyldigt, brugeren er logget ind
+        setIsLoggedIn(true);
+      }
+    }
+  }, []);
+
   console.log(isLoggedIn);
   return (
     <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn }}>

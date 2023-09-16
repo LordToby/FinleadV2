@@ -45,6 +45,7 @@ export const ModalPopup=(props)=>{
     if(response.ok){
       setIsLoggedIn(true);
       const responseData = await response.json();
+      localStorage.setItem("token", responseData.tokenString);
       console.log(responseData)
       setError("");
       handleClose();
@@ -66,6 +67,7 @@ export const ModalPopup=(props)=>{
      }
      else{
       setIsLoggedIn(false);
+      localStorage.removeItem("token");
       handleClose();
      }
   }
@@ -118,7 +120,7 @@ export const ModalPopup=(props)=>{
             </form>
   
             <div className="mt-3">
-              <p className="mb-0  text-center">
+              <p className="mb-0 text-center">
                 Don't have an account? <br></br>
                 <button className="text-primary fw-bold" onClick={()=> {navigate("/register")}}>
                   Sign Up

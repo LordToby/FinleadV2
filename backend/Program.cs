@@ -22,9 +22,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
+var isDevelopment = builder.Environment.IsDevelopment();
+
 var configuration = new ConfigurationBuilder()
     .SetBasePath(builder.Environment.ContentRootPath)
-    .AddJsonFile("appsettings.Development.json")
+    .AddJsonFile(isDevelopment ?"appsettings.Development.json" : "appsettings.json")
     .Build();
 
 
@@ -32,49 +34,54 @@ var configuration = new ConfigurationBuilder()
 builder.Services.AddControllers();
 builder.Services.AddScoped<PersonController>();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c =>
-{
-    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-    {
-        Description = @"JWT Authorization header using the Bearer scheme. \r\n\r\n
-                      Enter 'Bearer' [space] and then your token in the text input below.
-                      \r\n\r\nExample: 'Bearer 12345abcdef'",
-        Name = "Authorization",
-        In = ParameterLocation.Header,
-        Type = SecuritySchemeType.ApiKey,
-        Scheme = "Bearer"
-    });
 
-    c.AddSecurityRequirement(new OpenApiSecurityRequirement()
-    {
-        {
-            new OpenApiSecurityScheme
-            {
-                Reference = new OpenApiReference
-                {
-                    Type = ReferenceType.SecurityScheme,
-                    Id = "Bearer"
-                },
-                Scheme = "oauth2",
-                Name = "Bearer",
-                In = ParameterLocation.Header
-            },
-            new List<string>()
-        }
-    });
-
-
-});
-
-builder.Services.AddSignalR();
-
-builder.Services.AddDbContext<MyDbContext>().AddMvc();
-
+//Add caching
 string redisCacheUrl = configuration["RedisCacheUrl"];
 ConfigurationOptions redisConfig = ConfigurationOptions.Parse(redisCacheUrl);
 redisConfig.AbortOnConnectFail = false;
 
-builder.Services.AddStackExchangeRedisCache(options => { options.ConfigurationOptions = redisConfig;});
+
+builder.Services.AddStackExchangeRedisCache(options => { options.ConfigurationOptions = redisConfig; });
+
+builder.Services.AddSwaggerGen(c =>
+{
+    //c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    //{
+    //    Description = @"JWT Authorization header using the Bearer scheme. \r\n\r\n
+    //                  Enter 'Bearer' [space] and then your token in the text input below.
+    //                  \r\n\r\nExample: 'Bearer 12345abcdef'",
+    //    Name = "Authorization",
+    //    In = ParameterLocation.Header,
+    //    Type = SecuritySchemeType.ApiKey,
+    //    Scheme = "Bearer"
+    //});
+
+    //c.AddSecurityRequirement(new OpenApiSecurityRequirement()
+    //{
+    //    {
+    //        new OpenApiSecurityScheme
+    //        {
+    //            Reference = new OpenApiReference
+    //            {
+    //                Type = ReferenceType.SecurityScheme,
+    //                Id = "Bearer"
+    //            },
+    //            Scheme = "oauth2",
+    //            Name = "Bearer",
+    //            In = ParameterLocation.Header
+    //        },
+    //        new List<string>()
+    //    }
+    //});
+
+
+});
+
+//Add websockets
+builder.Services.AddSignalR();
+
+builder.Services.AddDbContext<MyDbContext>().AddMvc();
+
 
 
 builder.Services.AddCors(options =>
@@ -86,38 +93,32 @@ builder.Services.AddCors(options =>
                       });
 });
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
-    .AddEntityFrameworkStores<MyDbContext>();
 
-builder.Services.AddAuthentication(options =>
+//Add webtoken
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
 {
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-})
-.AddJwtBearer(x =>
-{
-    var secret = builder.Configuration.GetValue<string>("Secret");
-    var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(secret));
-    x.RequireHttpsMetadata = true;
-    x.SaveToken = true;
-    x.TokenValidationParameters = new TokenValidationParameters
+    //options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    //options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+    //options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+
+    options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
     {
-        ValidateIssuerSigningKey = true,
-        ValidAudience = "https://localhost:5050",
+        RequireExpirationTime = true,
         ValidIssuer = "https://localhost:5050/",
-        IssuerSigningKey = key,
+        ValidateIssuer = true,
+        ValidateAudience = false,
         ValidateLifetime = true,
-        ClockSkew = TimeSpan.Zero
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetValue<string>("Secret")))
+
     };
 });
 
 
-
-
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
+if (isDevelopment)
 {
     app.UseSwagger();
     app.UseSwaggerUI();
@@ -126,6 +127,9 @@ if (app.Environment.IsDevelopment())
 app.UseCors(MyAllowSpecificOrigins);
 
 app.UseRouting();
+app.UseHttpsRedirection();
+app.UseAuthorization();
+app.UseAuthentication();
 
 app.UseEndpoints(endpoints =>
 {
@@ -135,25 +139,12 @@ app.UseEndpoints(endpoints =>
 });
 
 //app.MapHub<ChatHub>("/chatHub");
-app.UseHttpsRedirection();
 
-app.UseAuthorization();
+var filePath = Path.Combine(Directory.GetCurrentDirectory(), "test.json");
+
+var content = File.ReadAllText(filePath);
+
 
 app.MapControllers();
-
-using (var scope = app.Services.CreateScope())
-using (var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>())
-using (var db = scope.ServiceProvider.GetRequiredService<MyDbContext>())
-{
-   // db.Database.Migrate();
-    var user = await userManager.FindByNameAsync(Consts.UserName);
-
-    if (user == null)
-    {
-        user = new IdentityUser(Consts.UserName);
-        await userManager.CreateAsync(user, Consts.Password);
-    }
-}
-
 
 app.Run();
