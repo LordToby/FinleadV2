@@ -13,6 +13,22 @@
     
 }
 
+.userBox{
+    display: flex;
+}
+
+p{
+    margin: 0;
+  }
+  
+  .userBox img{
+    border-radius: 40%;
+  }
+
+.location-info{
+    display: flex;
+    justify-content: space-between;
+}
 
 
 .flex-container{

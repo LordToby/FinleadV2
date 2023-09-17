@@ -16,9 +16,9 @@ export const Root = () => {
         <Header />
       </div>
       <div className="content">
-      <button onClick={()=>{navigate("/about")}}>
+      {/* <button onClick={()=>{navigate("/about")}}>
         To about
-      </button>
+      </button> */}
         <Outlet></Outlet>
       </div>
       <div className="footer">

@@ -65,3 +65,11 @@ code {
 .left-header {
   margin: 0 5%;
 }
+
+.userBox{
+  display: flex;
+  gap: 20px;
+}
+
+
+
