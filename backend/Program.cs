@@ -79,11 +79,7 @@ builder.Services.AddSwaggerGen(c =>
 
 //Add websockets
 builder.Services.AddSignalR();
-
 builder.Services.AddDbContext<MyDbContext>().AddMvc();
-
-
-
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: MyAllowSpecificOrigins,

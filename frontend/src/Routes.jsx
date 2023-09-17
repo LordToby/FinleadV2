@@ -8,7 +8,7 @@ import { Spinner } from "./components/shared/Spinner";
 import { Register } from "./pages/Register";
 import { ProfilePage } from "./pages/ProfilePage";
 import { ModalPopup } from "./components/ModalPopup";
-
+import jwt_decode from "jwt-decode";
 
 const router = createBrowserRouter([
   {
@@ -33,24 +33,14 @@ function Routes() {
     // Gendan JWT-token ved sideindlæsning
     const token = localStorage.getItem("token");
     console.log(token);
+
     if (token) {
-      // Tjek tokenets udløbstid
-      const decodedToken = jwt_decode(token);
-      console.log(decodedToken);
-      const currentTime = Math.floor(Date.now() / 1000); // Konverter til sekunder
-      console.log(decodedToken.exp);
-      if (decodedToken.exp && decodedToken.exp < currentTime) {
-        // Tokenet er udløbet, slet det og log brugeren ud
-        localStorage.removeItem("token");
-        setIsLoggedIn(false);
-      } else {
-        // Tokenet er gyldigt, brugeren er logget ind
-        setIsLoggedIn(true);
-      }
+       setIsLoggedIn(true);
     }
   }, []);
 
   console.log(isLoggedIn);
+  
   return (
     <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn }}>
       <RouterProvider
@@ -59,6 +49,11 @@ function Routes() {
       ></RouterProvider>
     </AuthContext.Provider>
   );
+}
+
+function checkToken(token){
+  const { decodedToken, isExpired } = useJwt(token);
+  console.log(decodedToken);
 }
 
 export default Routes;

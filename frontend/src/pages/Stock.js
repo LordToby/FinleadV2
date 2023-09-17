@@ -4,7 +4,7 @@ import { CommentField } from "../components/CommentField";
 import { CommentBox } from "../components/CommentBox";
 import { useParams } from "react-router-dom";
 import AuthContext from "../components/AuthContext";
-
+import { useContext } from "react";
 const StockData = [
   {
     id: 1,
