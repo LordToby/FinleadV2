@@ -15,8 +15,10 @@ namespace ElephantSQL_example.Controllers
         private readonly PersonController _personController;
         private readonly MyDbContext _dbContext;
         private readonly ILogger<PersonController> _logger;
-        public LoginController(MyDbContext dbContext, ILogger<PersonController> logger, PersonController personController)
+        private readonly IConfiguration _configuration;
+        public LoginController(IConfiguration configuration, MyDbContext dbContext, ILogger<PersonController> logger, PersonController personController)
         {
+            _configuration = configuration;
             _dbContext = dbContext;
             _logger = logger;
             _personController = personController;   
@@ -49,7 +51,7 @@ namespace ElephantSQL_example.Controllers
                 return StatusCode(StatusCodes.Status401Unauthorized);
             }
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("secret*secret123secret444"));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Secret"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
             var claims = new[]
             {

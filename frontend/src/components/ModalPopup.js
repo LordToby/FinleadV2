@@ -29,8 +29,10 @@ export const ModalPopup=(props)=>{
     event.preventDefault();
     console.log(inputs);
     let response = null;
+    console.log(inputs);
     if(!isLoggedIn){   
     response = await fetch(`http://localhost:7050/Login/loginUser?email=${inputs.email}&password=${inputs.password}`, {
+
       method: "POST",
       headers: {
         "Content-Type": "application/json",

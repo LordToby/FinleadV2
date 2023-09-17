@@ -34,10 +34,5 @@ public class MyDbContext : IdentityDbContext<IdentityUser>
         base.OnModelCreating(modelBuilder);
     }
 
-    //Dette er connection string til databasen. Informationerne fås fra editoren i Elephant SQL.
-    //Skal det være rigtigt skal jeg hive connectionString ind fra appsettings.json istedet.
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        optionsBuilder.UseNpgsql("Server=mouse.db.elephantsql.com;Port=5432;Database=vhaadoru;User Id=vhaadoru;Password=CDnHt_wQpm0bhxGqhWY25YgLoddRweby;"); // Erstat "connection_string" med din forbindelsesstreng til ElephantSQL-databasen
-    }
+   
 }
