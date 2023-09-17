@@ -1,3 +1,4 @@
+import { React } from "react";
 import "../index.css";
 import { ModalPopup } from "../components/ModalPopup";
 import { Header } from "../components/layout/header/Header";

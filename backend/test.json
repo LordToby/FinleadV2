@@ -1,0 +1,30 @@
+﻿[
+    {
+        "id": 2,
+        "firstName": "Søren",
+        "lastName": "Hedegaard",
+        "birthDay": "2023-06-09T16:25:05.671Z",
+        "country": "Denmark"
+    },
+    {
+        "id": 3,
+        "firstName": "Enogard",
+        "lastName": "Sasu",
+        "birthDay": "2023-06-09T16:35:26.466Z",
+        "country": "Bulgaria"
+    },
+    {
+        "id": 8,
+        "firstName": "Tintin",
+        "lastName": "Tinsen",
+        "birthDay": "2023-06-25T12:06:56.715125Z",
+        "country": "Belgium"
+    },
+    {
+        "id": 9,
+        "firstName": "Magnus",
+        "lastName": "Geert",
+        "birthDay": "2023-06-29T15:50:19.435027Z",
+        "country": "Danmark"
+    }
+]

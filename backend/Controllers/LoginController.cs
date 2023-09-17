@@ -1,6 +1,10 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace ElephantSQL_example.Controllers
 {
@@ -35,24 +39,30 @@ namespace ElephantSQL_example.Controllers
         [HttpPost("loginUser", Name = "LoginUser")]
         public async Task<IActionResult> LoginUser(string email, string password)
         {
-            var user = await _dbContext.User.Where(x => x.Email == email).FirstOrDefaultAsync();
-                if (user != null)
-                {
-                   bool verified = BCrypt.Net.BCrypt.Verify(password, user.Password);
-                   if (verified)
-                    {
-                    Console.WriteLine("Der er adgang");
-                    return Ok(user);
-                    }
-                else
-                {
-                    return StatusCode(StatusCodes.Status404NotFound);
-                }
-                }
-            else
+
+
+            var user = await _dbContext.User.FirstOrDefaultAsync(x => x.Email == email);
+
+            if (user == null || !BCrypt.Net.BCrypt.Verify(password, user.Password))
             {
-                return StatusCode(StatusCodes.Status404NotFound);
-            }                        
+                // Returner en 401 Unauthorized-statuskode for mislykket autentificering.
+                return StatusCode(StatusCodes.Status401Unauthorized);
+            }
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("secret*secret123secret444"));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var claims = new[]
+            {
+        new Claim(ClaimTypes.Role, "User"),
+    };
+
+            var token = new JwtSecurityToken("https://localhost:5050/", "http://localhost:3000/", claims, expires: DateTime.Now.AddMinutes(5), signingCredentials: creds);
+            var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
+
+            // Returner JWT-token som JSON-resultat.
+            return new JsonResult(new { tokenString });
+
+
         }
 
         //Logout håndteres udelukkende i frontenden

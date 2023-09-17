@@ -8,6 +8,7 @@ import { Spinner } from "./components/shared/Spinner";
 import { Register } from "./pages/Register";
 import { ProfilePage } from "./pages/ProfilePage";
 import { ModalPopup } from "./components/ModalPopup";
+import jwt_decode from "jwt-decode";
 
 const router = createBrowserRouter([
   {
@@ -27,7 +28,19 @@ const router = createBrowserRouter([
 
 function Routes() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    // Gendan JWT-token ved sideindlæsning
+    const token = localStorage.getItem("token");
+    console.log(token);
+
+    if (token) {
+       setIsLoggedIn(true);
+    }
+  }, []);
+
   console.log(isLoggedIn);
+  
   return (
     <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn }}>
       <RouterProvider
@@ -36,6 +49,11 @@ function Routes() {
       ></RouterProvider>
     </AuthContext.Provider>
   );
+}
+
+function checkToken(token){
+  const { decodedToken, isExpired } = useJwt(token);
+  console.log(decodedToken);
 }
 
 export default Routes;
