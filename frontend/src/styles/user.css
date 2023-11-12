@@ -1,5 +1,17 @@
 
 
+.comments{
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 0 2rem;
+}
+
+.comment-container{
+    display: grid;
+    grid-template-columns: auto 2fr;
+}
+
 .user-pic-container{
     width:10%; 
     height: 100%;
@@ -34,6 +46,11 @@
     display: grid;
     grid-template-columns: 1fr 2fr;
     gap:2rem
+}
+
+.post-container img{
+    border-radius: 70%;
+    height: 10vh;
 }
 
 .name-info img{
@@ -96,20 +113,28 @@
     height: 10vh;
 }
 
-.feed-table .post-container{
+ .post-container{
     display: grid;
     grid-template-columns: auto 2fr;
     column-gap: 1rem;
     border-top: 1px solid black;
+    background-color: blanchedalmond;
+    padding-top: 0.5rem;
+    padding-left: 0.5rem;
 }
 
-.feed-table .post-container .post-icons{
+.post-container p{
+    margin:0;
+}
+
+
+.post-icons{
     grid-column: 1 / span 2;
     display: flex;
     justify-content: space-evenly;
 }
 
-.feed-table .post-container .post-icons .post-icons-icon{
+.post-icons-icon{
      display: flex;
      align-items: center;
      gap:0.5rem;

@@ -2,6 +2,7 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { Root } from "./pages/Root";
 import { NotFound } from "./pages/NotFound";
 import Stock from "./pages/Stock";
+import { Test } from "./pages/Test";
 import React, { useState, useEffect } from "react";
 import AuthContext from "./components/AuthContext";
 import { Spinner } from "./components/shared/Spinner";
@@ -22,6 +23,7 @@ const router = createBrowserRouter([
       { path: "spinner", element: <Spinner /> },
       { path: "register", element: <Register /> },
       { path: "profile/:name", element: <ProfilePage /> },
+      {path: "test", element: <Test/>}
     ],
   },
 ]);
