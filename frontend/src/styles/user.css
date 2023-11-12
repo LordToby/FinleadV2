@@ -13,21 +13,137 @@
     
 }
 
-.userBox{
-    display: flex;
+.userPage{
+    display: grid;
+    grid-template-columns: auto 2fr;
+    padding: 3rem;
+    row-gap: 1.5rem;
 }
 
-p{
+  
+
+
+  .userPage p{
     margin: 0;
   }
-  
-  .userBox img{
-    border-radius: 40%;
-  }
+
+.userPage .name-info{
+    /* align-self: center; */
+    text-transform: capitalize;
+    font-weight: bold;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap:2rem
+}
+
+.name-info img{
+    border-radius: 70%;
+    height: 20vh;
+}
+
+.name-info-text{
+    align-self: center;
+}
 
 .location-info{
     display: flex;
     justify-content: space-between;
+}
+
+.userPage .location-info{
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    grid-column: 1/-1;
+    padding: 0.5rem 0;
+}
+
+.userPage .location-info .location-icon{
+    display: flex;
+    align-items: center;
+    gap:0.5rem
+}
+
+.userPage .location-info .name-info-text{
+    display: flex;
+    align-items: center;
+}
+
+
+
+.feed-table{
+    grid-row: 4;
+    background-color: #fff;
+    grid-column: 1 /-1;;
+    width: 100%;
+    border-top-right-radius: 2%;
+    border-top-left-radius: 2%;
+}
+
+.feed-table .tabs{
+    display: flex;
+    justify-content: space-evenly;
+    gap:1rem;
+    align-items: center;
+    padding: 1rem 0;
+    font-weight: bold;
+}
+
+.feed-table .tabs p{
+    margin:0
+}
+
+.feed-table img{
+    height: 10vh;
+}
+
+.feed-table .post-container{
+    display: grid;
+    grid-template-columns: auto 2fr;
+    column-gap: 1rem;
+    border-top: 1px solid black;
+}
+
+.feed-table .post-container .post-icons{
+    grid-column: 1 / span 2;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.feed-table .post-container .post-icons .post-icons-icon{
+     display: flex;
+     align-items: center;
+     gap:0.5rem;
+}
+
+.post-container img{
+    
+    grid-row: 1 / -1;
+}
+
+.user-details{
+    display: flex;
+    align-items: center;
+    gap:0.5rem;
+}
+
+.stock-name{
+    font-weight: bold;
+    color:blue;
+}
+
+.comment-text{
+    max-width: 100%;
+    width: 70%;
+}
+
+.stock-name strong{
+    background-color: red;
+    color:black;
+}
+
+.user-details span{
+    font-size: 14px;
+    font-weight: 200;
 }
 
 
