@@ -103,10 +103,17 @@
     align-items: center;
     padding: 1rem 0;
     font-weight: bold;
+    list-style: none;
 }
 
-.feed-table .tabs p{
-    margin:0
+.tab{
+    display: inline-block;
+    transition: all 2s;
+    
+}
+
+.tab:hover{
+   border-bottom: 1px solid lightgray;
 }
 
 .feed-table img{

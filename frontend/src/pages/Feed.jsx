@@ -8,11 +8,11 @@ export const Feed = () =>{
     return(
         <Fragment>
             <div className="feed-table">
-                <div className="tabs">
-                    <p>Posts</p>
-                    <p>Replies</p>
-                    <p>Liked</p>
-                </div>
+                <ul className="tabs">
+                    <li className="tab">Posts</li>
+                    <li className="tab">Replies</li>
+                    <li className="tab">Liked</li>
+                </ul>
                 <div className="post-container">
                 <img src="/userPicture.png"/>
                 <div className="comment">
