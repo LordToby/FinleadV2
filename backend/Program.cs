@@ -41,7 +41,7 @@ builder.Services.AddEndpointsApiExplorer();
 // redisConfig.AbortOnConnectFail = false;
 
 
-builder.Services.AddStackExchangeRedisCache(options => { options.ConfigurationOptions = redisConfig; });
+// builder.Services.AddStackExchangeRedisCache(options => { options.ConfigurationOptions = redisConfig; });
 
 builder.Services.AddSwaggerGen(c =>
 {
@@ -68,30 +68,29 @@ builder.Services.AddCors(options =>
 
 
 //Add webtoken
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
-{
-    options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
-    {
-        RequireExpirationTime = true,
-        ValidIssuer = "https://localhost:5050/",
-        ValidateIssuer = true,
-        ValidateAudience = false,
-        ValidateLifetime = true,
-        ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetValue<string>("Secret")))
+// builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+//     .AddJwtBearer(options =>
+// {
+//     options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
+//     {
+//         RequireExpirationTime = true,
+//         ValidIssuer = "https://localhost:5050/",
+//         ValidateIssuer = true,
+//         ValidateAudience = false,
+//         ValidateLifetime = true,
+//         ValidateIssuerSigningKey = true,
+//         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetValue<string>("Secret")))
 
-    };
-});
+//     };
+// });
 
 builder.Services.AddSingleton<IConfiguration>(configuration);
 var app = builder.Build();
 
-if (isDevelopment)
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+
+app.UseSwagger();
+app.UseSwaggerUI();
+
 
 app.UseCors(MyAllowSpecificOrigins);
 
