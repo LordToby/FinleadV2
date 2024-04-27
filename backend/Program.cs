@@ -36,9 +36,9 @@ builder.Services.AddScoped<PersonController>();
 builder.Services.AddEndpointsApiExplorer();
 
 //Add caching
-string redisCacheUrl = configuration["RedisCacheUrl"];
-ConfigurationOptions redisConfig = ConfigurationOptions.Parse(redisCacheUrl);
-redisConfig.AbortOnConnectFail = false;
+// string redisCacheUrl = configuration["RedisCacheUrl"];
+// ConfigurationOptions redisConfig = ConfigurationOptions.Parse(redisCacheUrl);
+// redisConfig.AbortOnConnectFail = false;
 
 
 builder.Services.AddStackExchangeRedisCache(options => { options.ConfigurationOptions = redisConfig; });
@@ -100,12 +100,12 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 app.UseAuthentication();
 
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapHub<SocketHandler>("/chatHub", options =>{
-        options.Transports = HttpTransportType.WebSockets;
-    });
-});
+// app.UseEndpoints(endpoints =>
+// {
+//     endpoints.MapHub<SocketHandler>("/chatHub", options =>{
+//         options.Transports = HttpTransportType.WebSockets;
+//     });
+// });
 
 //app.MapHub<ChatHub>("/chatHub");
 
